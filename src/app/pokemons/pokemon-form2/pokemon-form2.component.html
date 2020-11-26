@@ -1,0 +1,64 @@
+<form *ngIf="pokemon" [formGroup]="editForm" (ngSubmit)="onSubmit()">
+    <div class="row">
+        <div class="col s8 offset-s2">
+            <div class="card-panel">
+
+                <!-- Pokemon name -->
+                <div class="form-group">
+                    <label for="name">Nom</label>
+                    <input type="text" class="form-control" id="name" formControlName="name"> 
+
+                    <div *ngIf="!f.name.valid" class="card-panel red accent-1">
+                        <div>Le nom du pokémon est requis (1-25).</div>
+                    </div>
+                </div>
+
+                <!-- Pokemon hp -->
+                <div class="form-group">
+                    <label for="hp">Point de vie</label>
+                    <input type="number" class="form-control" formControlName="hp">
+
+                    <div *ngIf="!f.hp.valid" class="card-panel red accent-1">
+                        <div>Les points de vie du pokémon sont compris entre 0 et 999.</div>
+                    </div>
+                </div>
+
+                <!-- Pokemon cp -->
+                <div class="form-group">
+                    <label for="cp">Dégâts</label>
+                    <input type="number" class="form-control" formControlName="cp">
+
+                    <div *ngIf="!f.cp.valid" class="card-panel red accent-1">
+                        <div>Les dégâts du pokémon sont compris entre 0 et 99.</div>
+                    </div>
+                </div>
+
+                <!-- Pokemon types -->
+                <form class="form-group">
+                    <label for="types">Types</label>
+                    <p *ngFor="let type of types">
+                        <label>
+                            <input type="checkbox" class="filled-in" id="{{ type }}" [value]="type"
+                                [checked]="hasType(type)" [disabled]="!isTypesValid(type)"
+                                (change)="selectType($event, type)" />
+                            <span [attr.for]="type">
+                                <div class="{{ type | pokemonTypeColor }}">
+                                    {{ type }}
+                                </div>
+                            </span>
+                        </label>
+                    </p>
+                </form>
+
+                <!-- Submit button -->
+                <div class="divider"></div>
+                <div class="section center">
+                    <button type="submit" class="waves-effect waves-light btn" [disabled]="editForm.invalid">
+                        Valider</button>
+                </div>
+
+            </div>
+        </div>
+    </div>
+</form>
+<h3 *ngIf="!pokemon" class="center">Aucun pokémon à éditer...</h3>
